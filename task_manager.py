@@ -29,6 +29,8 @@ def create_task(task_id: int, task: Task):
 
     if task_id in Tasks:
         raise HTTPException(status_code=409, detail="Task already exists")
+    elif task in Tasks:
+        raise HTTPException(status_code=409, detail="Task already exists")
 
     Tasks[task_id] = task.model_dump()  
     return Tasks[task_id]
