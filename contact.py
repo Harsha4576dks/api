@@ -46,3 +46,13 @@ def update_user(contact_id:int, contact:updateuser):
         current_contact["number"] = contact.number
 
     return current_contact
+
+@app.delete("/contact/{contact_id}")
+def delete_user(contact_id:int):
+    if contact_id not in contacts:
+        raise HTTPException(status_code=404,detail = "contact not found")
+    else:
+        deleted_user = contacts.pop(contact_id)
+
+    return {"message":"contact  deleted  sucessfully","deleted_user":deleted_user}
+
