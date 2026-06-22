@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 from datetime import date
+from typing import Optional 
 
 app = FastAPI()
 
@@ -14,6 +15,10 @@ Tasks = {
 class Task(BaseModel):
     name: str
     date: date
+
+class update_Task(BaseModel):
+    name:Optional[str] = None
+    date:Optional[int] = None
 
 
 @app.get("/Tasks/{task_id}")
@@ -43,3 +48,17 @@ def delete_task(task_id:int):
         deleted_task = Tasks.pop(task_id)
 
         return {"message":"task is deleted","deleted": deleted_task}
+    
+@app.put("/Tasks/{task_id}")
+def update_Task(task_id:int, task:update_Task):
+    if task_id not in Tasks:
+        raise HTTPException(status_code=400, detail="user not found")
+    
+    current_task = Tasks[task_id]
+
+    if task.name is not None:
+        current_task["name"] = task.name
+    if task.date is not None:
+        current_task["date"] = task.date
+
+    return current_task
