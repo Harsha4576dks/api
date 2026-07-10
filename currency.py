@@ -50,3 +50,13 @@ def update_rates(new_rates: updaterates):
         raise HTTPException(status_code=400, detail="No valid rates provided to update")
 
     return {"updated_rates": rates}
+
+@app.delete("/rates/{currency}")
+def delete_rate(currency:str):
+    currency = currency.upper()
+
+    if currency not in rates:
+        raise HTTPException(status_code=404, detail="this currency is not found")
+    del rates[currency]
+
+    return {"message":f"{currency} deleted successfully", "remaining_rates":rates}
