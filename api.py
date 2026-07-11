@@ -73,11 +73,9 @@ def delete_user(user_id:int):
 def search_by_name(name:Optional[str] = None):
     if not name:
         return {"message:" "name parameter required"}
-    
-    
+        
     for user in users.values():
         if user["name"] == name:
             return user
-    
-    
+        
     raise HTTPException(status_code=404, detail="User not found")
